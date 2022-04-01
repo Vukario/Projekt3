@@ -1,0 +1,49 @@
+<form method="post" id="form">
+    {{#admin}}
+
+    <div class="my-2">
+        <label for="name">Jmeno</label>
+        <input id="name" name="name" class="form-control" type="text" value="{{employee.name}}"/><!--mělo by být required-->
+        {{#errors.name}}<div class="form-text text-warning">{{errors.name}}</div>{{/errors.name}}
+    </div>
+    <div class="my-2">
+        <label for="surname">Prijmeni</label>
+        <input id="surname" name="surname" class="form-control" type="text" value="{{employee.surname}}"/><!--mělo by být required-->
+        {{#errors.surname}}<div class="form-text text-warning">{{errors.surname}}</div>{{/errors.surname}}
+    </div>
+    <div class="my-2">
+        <label for="job">Pozice</label>
+        <input id="job" name="job" class="form-control" type="text" value="{{employee.job}}"/>
+        {{#errors.job}}<div class="form-text text-warning">{{errors.job}}</div>{{/errors.job}}
+    </div>
+    <div class="my-2">
+        <label for="wage">Plat</label>
+        <input id="wage" name="wage" class="form-control" type="text" value="{{employee.wage}}"/>
+    </div>
+    <div class="my-2">
+
+        <select name="room" id="room" form="form" >
+            {{#room}}<option  class="form-control" type="text" value={{room_id}}>{{name}}</option>{{/room}}
+        </select>
+
+        {{#errors.room}}<div class="form-text text-warning">{{errors.room}}</div>{{/errors.room}}
+    </div>
+    <div class="my-2">
+        <label for="login">Login</label>
+        <input id="login" name="login" class="form-control" type="text" value="{{employee.login}}"/>
+        {{#errors.login}}<div class="form-text text-warning">{{errors.login}}</div>{{/errors.login}}
+    </div>
+    {{/admin}}
+    <div class="my-2">
+        <label for="password">password</label>
+        <input id="password" name="password" class="form-control" type="text" value="{{employee.password}}"/>
+    </div>
+
+    <div class="my-2">
+        {{#create}}<input type="hidden" name="action" value="create" />
+            <input type="submit" value="Create" class="btn btn-primary" />{{/create}}
+        {{#update}}<input type="hidden" name="action" value="update" />
+            <input type="hidden" name="employee_id" value="{{employee.employee_id}}">
+            <input type="submit" value="Update" class="btn btn-primary" />{{/update}}
+    </div>
+</form>

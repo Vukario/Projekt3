@@ -1,0 +1,30 @@
+<h3>Je přihlášen : {{logedName}} {{logedSurname}} <a href="logout.php">logout</a></h3>
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>Room</th>
+        <th>Phone</th>
+        <th>Job</th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    {{# employees }}
+        <tr>
+            <td><a href="{{ employeeDetailName }}?employee_id={{ employee_id }}">{{ name }} {{ surname }}</a></td>
+            <td>{{ room_name }}</td>
+            <td>{{ phone }}</td>
+            <td>{{ job }}</td>
+            <td><form action="deleteEmployee.php" method="post" onsubmit="return confirm('Really delete?\n\n this action cannot be undone!');" style="display: inline-block;">
+                <input type="hidden" name="employee_id" value="{{ employee_id }}" />
+                <input type="submit" value="Delete" class="btn btn-danger">
+            </form>
+                <a href="updateEmployee.php?employee_id={{ employee_id }}" class="btn btn-info">Edit</a></td>
+        </tr>
+    {{/employees}}
+    <tr>
+    <td><a href="createEmployee.php" class="btn btn-info">create</a></td>
+    </tr>
+    </tbody>
+</table>

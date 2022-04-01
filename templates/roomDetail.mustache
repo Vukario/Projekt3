@@ -1,0 +1,25 @@
+{{# rooms }}
+<h1>{{name}}</h1>
+<h1>místnost č. {{no}}.</h1>
+<p1>číslo: {{no}}.</p1><br>
+<p1>název: {{name}}</p1><br>
+{{/rooms}}
+{{#avgd}}
+<p1>průměrná mzda:{{avgwage}}</p1><br><br>
+{{/avgd}}
+<p1>lidé:</p1>
+{{#employees}}
+
+
+<ul>
+    <li>{{ename}},{{surname}}</li>
+</ul>
+{{/employees}}
+<p1>klíče:</p1>
+<ul>
+    {{#keyes}}
+    <li><a href="employeeDetail.php?employee_id={{employee_id}}">{{ename}} {{surname}}</a></li>
+    {{/keyes}}
+</ul>
+
+<p><br><h3><a style='text-decoration:none' href=room.php>Zpět na \"Seznam místností <i class='bi bi-grid-fill'></i>\"</a></h3></p>

@@ -1,0 +1,17 @@
+{{# employees }}
+<h1>Karta Osoby: {{name}} {{surname}}</h1>
+<p>Jmeno: {{name}}</p>
+<p>Prijmeni: {{surname}}</p>
+<p>Plat: {{wage}} Kč</p>
+<p>Pozice: {{job}}</p>
+<p>Mistnost: {{room_name}}</p>
+
+{{/employees}}
+<p1>klíče:</p1>
+<ul>
+    {{#keyes}}
+    <li><a href="roomDetail.php?room_id={{room_id}}">{{room_name}}</a></li>
+    {{/keyes}}
+</ul>
+
+<p><br><h3><a style='text-decoration:none' href=employee.php>Zpět na \"Seznam zaměstnanců <i class='bi bi-grid-fill'></i>\"</a></h3></p>
