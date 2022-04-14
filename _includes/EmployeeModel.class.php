@@ -11,6 +11,7 @@ class EmployeeModel
     public string $login="";
     public string $password="";
 
+
     private array $validationErrors = [];
 
     public function getValidationErrors(): array
@@ -39,6 +40,11 @@ WHERE employee_id=:employeeId AND room_id = employee.room');
         $stmt->execute();
         return $stmt;
     }
+    public static function getAllKeys():PDOStatement{
+        $stmt = DB::getConnection()->prepare('SELECT * FROM `key` ');
+        $stmt->execute();
+        return $stmt;
+    }
     public function update() : bool
     {
 
@@ -54,6 +60,14 @@ WHERE employee_id=:employeeId AND room_id = employee.room');
         $stmt->bindParam(':login', $this->login);
         $passHashed= hash("sha256",$this->password);
         $stmt->bindParam(':password', $passHashed);
+
+        $sql2 = "DELETE FROM `key` WHERE employee=:employee_id";
+        $stmt2 = DB::getConnection()->prepare($sql2);
+        $stmt2->bindParam(':employee_id', $this->employee_id);
+        $stmt2->execute();
+        foreach ($_POST["key"] as $key){
+            $this->insertKeyUpdate($key);
+        }
 
         return $stmt->execute();
     }
@@ -72,6 +86,8 @@ WHERE employee_id=:employeeId AND room_id = employee.room');
 
         $sql = "INSERT INTO employee (name, surname, job,wage,room,login,password) VALUES (:name, :surname, :job,:wage,:room,:login,:password)";
 
+
+
         $stmt = DB::getConnection()->prepare($sql);
         $stmt->bindParam(':name', $this->name);
         $stmt->bindParam(':surname', $this->surname);
@@ -79,11 +95,36 @@ WHERE employee_id=:employeeId AND room_id = employee.room');
         $stmt->bindParam(':wage', $this->wage);
         $stmt->bindParam(':room', $this->room);
         $stmt->bindParam(':login', $this->login);
-        $stmt->bindParam(':password', $this->password);
+        $passHashed= hash("sha256",$this->password);
+        $stmt->bindParam(':password', $passHashed);
 
-        return $stmt->execute();
+         $returnos = $stmt->execute();
+         foreach ($_POST["key"] as $key){
+            $this->insertKey($key);
+        }
+        return $returnos;
     }
+    public function insertKeyUpdate($key){
+        $sql = "INSERT INTO `key` (employee,room) VALUES (:employee, :room)";
 
+
+        $stmt = DB::getConnection()->prepare($sql);
+        $stmt->bindParam(':employee', $this->employee_id);
+        $stmt->bindParam(':room', $key);
+        $stmt->execute();
+    }
+    public function insertKey($key){
+        $sql = "INSERT INTO `key` (employee,room) VALUES (:employee, :room)";
+        $sql2 = "SELECT MAX(employee_id) as max FROM employee";
+        $stmt2 = DB::getConnection()->prepare($sql2);
+        $stmt2->execute();
+        $stmt2 = $stmt2->fetch();
+
+        $stmt = DB::getConnection()->prepare($sql);
+        $stmt->bindParam(':employee', $stmt2->max);
+        $stmt->bindParam(':room', $key);
+        $stmt->execute();
+    }
 
     public static function getAll($orderBy = "name", $orderDir = "ASC") : PDOStatement
     {
@@ -121,15 +162,26 @@ FROM employee,room WHERE room_id = employee.room ORDER BY `{$orderBy}` {$orderDi
 
         return $employee;
     }
-    public static function getFromPost() : self {
+    public static function getFromPost() : self
+    {
 
         $employee = new EmployeeModel();
 
         $employee->employee_id = filter_input(INPUT_POST, "employee_id", FILTER_VALIDATE_INT);
+
         $employee->name = filter_input(INPUT_POST, "name");
-        $employee->surname =  filter_input(INPUT_POST, "surname");
+        $employee->surname = filter_input(INPUT_POST, "surname");
         $employee->job = filter_input(INPUT_POST, "job");
-        $employee->wage = filter_input(INPUT_POST, "wage");
+        if (ctype_digit(filter_input(INPUT_POST, "wage"))) {
+            if ((int)filter_input(INPUT_POST, "wage") > 0) {
+                $employee->wage = filter_input(INPUT_POST, "wage");
+            }
+
+        } else {
+            $employee->wage = null;
+        }
+      //
+
         $employee->room = filter_input(INPUT_POST, "room");
         $employee->login = filter_input(INPUT_POST, "login");
         $employee->password = filter_input(INPUT_POST, "password");
@@ -162,6 +214,10 @@ FROM employee,room WHERE room_id = employee.room ORDER BY `{$orderBy}` {$orderDi
         if (!$this->room){
             $isOk = false;
             $errors["room"] = "Employee room cannot be empty";
+        }
+        if ($this->wage==null){
+            $isOk = false;
+            $errors["wage"] = "Employee wage cannot be empty";
         }
         if ($this->password === ""){
             $isOk = false;

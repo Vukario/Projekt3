@@ -72,6 +72,8 @@ final class Page extends BaseDBPage{
                     return $this->m->render("reportFail", ["data"=>"Room creation failed. Please contact adiministrator or try again later."]);
                 }
 
+            }else{
+                return $this->m->render("reportFailEmp", ["data"=>"Employee creation failed. Please contact adiministrator or try again later."]);
             }
         }else{
             return $this->m->render("reportFail", ["data"=>"You don't have permition for creating room . Please contact adiministrator."]);

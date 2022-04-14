@@ -11,7 +11,7 @@ abstract class BasePage
     }
 
     public function render() : void {
-        try {
+      //  try {
             $this->setUp();
 
             $html = $this->header();
@@ -21,7 +21,7 @@ abstract class BasePage
 
             $this->wrapUp();
             exit;
-        } catch (RequestException $e) {
+       /* } catch (RequestException $e) {
             $ePage = new ErrorPage($e->getCode());
             $ePage->render();
         }
@@ -32,7 +32,7 @@ abstract class BasePage
                 $ePage = new ErrorPage();
                 $ePage->render();
             }
-        }
+        }*/
     }
 
     protected function setUp() : void {}

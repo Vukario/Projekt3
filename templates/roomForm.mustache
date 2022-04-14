@@ -13,6 +13,7 @@
     <div class="my-2">
         <label for="phone">Phone</label>
         <input id="phone" name="phone" class="form-control" type="text" value="{{room.phone}}"/>
+        {{#errors.phone}}<div class="form-text text-warning">{{errors.phone}}</div>{{/errors.phone}}
     </div>
 
 
@@ -24,3 +25,4 @@
             <input type="submit" value="Update" class="btn btn-primary" />{{/update}}
     </div>
 </form>
+<p><br><h3><a style='text-decoration:none' href=room.php>Zpět na "seznam zaměstnanců <i class='bi bi-grid-fill'></i>"</a></h3></p>

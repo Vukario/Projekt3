@@ -154,9 +154,15 @@ WHERE room_id=:roomId AND employee.room = room_id');
         if (!$this->no){
             $isOk = false;
             $errors["no"] = "Room number cannot be empty";
+        }elseif (!ctype_digit($this->no)){
+            $isOk = false;
+            $errors["no"] = "Room number must be int";
         }
         if ($this->phone === ""){
             $this->phone = null;
+        }elseif (!ctype_digit($this->phone)){
+            $isOk = false;
+            $errors["phone"] = "Room phone must be int";
         }
 
         $this->validationErrors = $errors;

@@ -40,6 +40,7 @@ final class Page extends BaseDBPage{
             $this->employee = EmployeeModel::getFromPost();
             if ($this->employee->validate()) {
                 //uložím
+             
                 if ($this->employee->insert()) {
                     $this->redirect(self::RESULT_SUCCESS);
                 } else {
@@ -63,19 +64,23 @@ final class Page extends BaseDBPage{
             return $this->m->render("employeeForm", [
                 "room"=>$this->employee,
                 "errors"=>$this->employee->getValidationErrors(),
+                "room"=>EmployeeModel::getRoomBy(),
+                "key"=>EmployeeModel::getRoomBy(),
                 "admin"=>true,
                 "create"=>true
             ]);
         } elseif ($this->state === self::STATE_REPORT_RESULT) {
             if ($this->result === self::RESULT_SUCCESS) {
-                return $this->m->render("reportSuccess", ["data"=>"Employee created successfully"]);
+                return $this->m->render("reportSuccessEmp", ["data"=>"Employee created successfully"]);
             } else {
-                return $this->m->render("reportFail", ["data"=>"Employee creation failed. Please contact adiministrator or try again later."]);
+                return $this->m->render("reportFailEmp", ["data"=>"Employee creation failed. Please contact adiministrator or try again later."]);
             }
 
+        }else{
+            return $this->m->render("reportFailEmp", ["data"=>"Employee creation failed. Please contact adiministrator or try again later."]);
         }
         }else{
-            return $this->m->render("reportFail", ["data"=>"You don't have permition for creating room . Please contact adiministrator."]);
+            return $this->m->render("reportFailEmp", ["data"=>"You don't have permition for creating room . Please contact adiministrator."]);
         }
     }
 

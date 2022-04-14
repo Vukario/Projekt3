@@ -104,6 +104,7 @@ final class Page extends BaseDBPage{
                     "employee"=>$this->employee,
                     "errors"=>$this->employee->getValidationErrors(),
                     "room"=>EmployeeModel::getRoomBy(),
+                    "key"=>EmployeeModel::getRoomBy(),
                     "admin"=>true,
                     "update"=>true
                 ]);
@@ -118,14 +119,14 @@ final class Page extends BaseDBPage{
 
         } elseif ($this->state === self::STATE_REPORT_RESULT) {
             if ($this->result === self::RESULT_SUCCESS) {
-                return $this->m->render("reportSuccess", ["data"=>"Room update successfully"]);
+                return $this->m->render("reportSuccessEmp", ["data"=>"Employee update successfully"]);
             } else {
-                return $this->m->render("reportFail", ["data"=>"Room update failed. Please contact adiministrator or try again later."]);
+                return $this->m->render("reportFailEmp", ["data"=>"Employee update failed. Please contact adiministrator or try again later."]);
             }
 
         }
         }else {
-            return $this->m->render("reportFail", ["data"=>"Room update failed you don't have permition. Please contact adiministrator."]);
+            return $this->m->render("reportFailEmp", ["data"=>"Employee update failed you don't have permition. Please contact adiministrator."]);
         }
     }
 
